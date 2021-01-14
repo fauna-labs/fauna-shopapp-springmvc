@@ -21,4 +21,8 @@ public class CategoryService {
     public List<Category> getCategories() throws ExecutionException, InterruptedException {
         return categoryRepository.allCategories();
     }
+
+    public List<String> getCategoryNames() throws ExecutionException, InterruptedException {
+        return categoryRepository.allCategoryNames();
+    }
 }

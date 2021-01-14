@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 @RestController
+@RequestMapping("/categories")
 public class CategoryController {
 
     private final CategoryService categoryService;
@@ -19,8 +20,13 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    @RequestMapping("/categories")
+    @RequestMapping("/")
     public List<Category> getCategories() throws ExecutionException, InterruptedException {
         return categoryService.getCategories();
+    }
+
+    @RequestMapping("/names")
+    public List<String> getCategoryNames() throws ExecutionException, InterruptedException {
+        return categoryService.getCategoryNames();
     }
 }

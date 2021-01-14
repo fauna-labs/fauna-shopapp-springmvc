@@ -23,18 +23,18 @@ public class CategoryRepository {
         this.faunaClient = faunaClient;
     }
 
-//    public List<Category> allCategories() throws ExecutionException, InterruptedException {
-//        Value categories = faunaClient.query(
-//                SelectAsIndex(Path("data", "data"),
-//                    Map(
-//                            Paginate(Match(Index(Value("all_Categories")))),
-//                            Lambda(Value("category"), Get(Var("category")))
-//                    )
-//                )
-//        ).get();
-//
-//        return List.of();
-//    }
+    public List<String> allCategoryNames() throws ExecutionException, InterruptedException {
+        Value categories = faunaClient.query(
+                SelectAsIndex(Path("data", "data", "name"),
+                    Map(
+                            Paginate(Match(Index(Value("all_Categories")))),
+                            Lambda(Value("category"), Get(Var("category")))
+                    )
+                )
+        ).get();
+
+        return List.copyOf(categories.collect(String.class));
+    }
 
     public List<Category> allCategories() throws ExecutionException, InterruptedException {
         Value categories = faunaClient.query(
