@@ -23,6 +23,15 @@ public class CategoryRepository {
         this.faunaClient = faunaClient;
     }
 
+    /*
+    FQL statement:
+    ==============================================================
+    Map(
+      Paginate(Match(Index("all_Categories"))),
+      Lambda("category", Get(Var("category")))
+    )
+    ==============================================================
+     */
     public List<String> allCategoryNames() throws ExecutionException, InterruptedException {
         Value categories = faunaClient.query(
                 SelectAsIndex(Path("data", "data", "name"),
@@ -36,6 +45,25 @@ public class CategoryRepository {
         return List.copyOf(categories.collect(String.class));
     }
 
+    /*
+    FQL statement:
+    ==============================================================
+    Map(
+      Paginate(Match(Index("all_Categories"))),
+      Lambda("category",
+        Let(
+          {
+            categoryDoc: Get(Var("category"))
+          },
+          {
+            id: Select(["ref", "id"], Var("categoryDoc")),
+            name: Select(["data", "name"], Var("categoryDoc"))
+          }
+        )
+      )
+    )
+    ==============================================================
+     */
     public List<Category> allCategories() throws ExecutionException, InterruptedException {
         Value categories = faunaClient.query(
                 SelectAsIndex(Path("data"),
