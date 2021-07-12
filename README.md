@@ -26,3 +26,8 @@ After that server should be available at http://localhost:8080/
 - List of categories: http://localhost:8080/categories/
 - Category names: http://localhost:8080/categories/names/
 - List of products: http://localhost:8080/products/
+
+### Swagger UI
+Swagger UI is automatically started as well, so you can check all
+the available endpoints here:  
+http://localhost:8080/swagger-ui/

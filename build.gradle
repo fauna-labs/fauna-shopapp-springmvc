@@ -19,6 +19,9 @@ dependencies {
 
 	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
+	implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
+	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '3.0.0'
+
 	compile group: 'com.faunadb', name: 'faunadb-java', version: '4.0.1'
 }
 
