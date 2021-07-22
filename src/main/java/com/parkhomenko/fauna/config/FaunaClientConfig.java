@@ -22,7 +22,7 @@ public class FaunaClientConfig {
         return FaunaClient.builder()
                 .withEndpoint(url)
                 .withSecret(secret)
-                .withCustomHeaders(Map.of("X-Fauna-Source", "shopapp-springmvc"))
+                .withCustomHeaders(Map.of("X-Fauna-Source", "fauna-shopapp-springmvc"))
                 .build();
     }
 }
