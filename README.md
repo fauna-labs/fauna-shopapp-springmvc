@@ -1,72 +1,86 @@
-# fauna-java
-This is a sample application that demonstrates basics operations we can perform in FQL
-by using a Fauna client for Java
+Sample shop API using Fauna and Java
+=============
 
-### Prerequisites
+#### Table of Contents
+* [Overview](#overview)
+* [Prerequisites](#prerequisites)
+* [Set up your Fauna database](#set-up-your-fauna-database)
+* [Run the app locally](#run-the-app-locally)
+
+## Overview
+This is a sample Spring Boot API for an e-commerce application that uses [Fauna](https://docs.fauna.com/) as a database, and Fauna's [JVM driver](https://github.com/fauna/faunadb-jvm).
+
+## Prerequisites
 The only prerequisite you need to run this application is JDK:  
 https://openjdk.java.net/install/index.html
 
 Supported Java versions:
 - 11 and higher
 
-You can do all operations on the database from the fauna dashboard:  
-https://dashboard.fauna.com/  
-Alternatively, you can use a fauna-shell app:  
-https://github.com/fauna/fauna-shell
+The next step uses the [Fauna Dashboard](https://dashboard.fauna.com) to set up your database. Alternatively, you could use the [Fauna Shell/CLI tool](https://github.com/fauna/fauna-shell).  
 
-### Fauna database structure
-You'll need to create 2 collections:
-- Categories (name: string)
-- Products (name: string, price: float, description: string, category_id: ref_Categories, quantity: int)
+## Set up your Fauna database
 
-Follow the next steps to create collections and documents:  
- * [Sign up for free](https://dashboard.fauna.com/accounts/register) or [log in](https://dashboard.fauna.com/accounts/login) at [dashboard.fauna.com](https://dashboard.fauna.com/accounts/register).
- * Click [CREATE DATABASE], name it "shopapp", select a region group (e.g., "Classic"), and click [CREATE]
- * Click the [SECURITY] tab at the bottom of the left sidebar, and [NEW KEY].
- * Create a Key with the default Role of "Admin" selected, you'll need to add this key to one of the environment variable to start the app, you'll see the name of that variable in the following section
- * Navigate to your "shopapp" by just clicking on it on the main page of the fauna dashboard
- * Click "New Collection", and provide a name for it, i.e. "Categories", and click "Save"
- * Do the same and create the "Products" collection
- * Navigate to the "Collections" menu and choose "Categories" collection
- * Click "New Document", in the opened page add some document, for example:
+ 1. [Sign up for free](https://dashboard.fauna.com/accounts/register) or [log in](https://dashboard.fauna.com/accounts/login) at [dashboard.fauna.com](https://dashboard.fauna.com/accounts/register).
+ 2. Click [CREATE DATABASE], name it "shopapp", select a region group (e.g., "Classic"), and click [CREATE].
+ 3. Click the [SECURITY] tab at the bottom of the left sidebar, and [NEW KEY].
+ 4. Create a Key with the default Role of "Admin" selected, and copy/paste the secret somewhere safe. It will not be displayed again, and you'll need this secret to start the app in the next section.
+ 5. Navigate to your "shopapp" database by clicking on it from the main page of your [Fauna Dashboard](https://dashboard.fauna.com) 
+ 6. Click [New Collection], name it "Categories", and click [Save].
+ 7. Do the same to create a "Products" collection.
+ 8. To quickly create some categories, navigate to the [Shell] tab in the left sidebar, paste the following query into the editor's bottom panel, and click [Run]:
 ```
-{
-    name: "Books"
-}
+Map(
+    [
+        ["101", { name: "books" }],
+        ["102", { name: "food" }],
+        ["103", { name: "tools" }]
+    ],
+    Lambda(
+        ["id", "data"],
+        Create(Ref(Collection("Categories"), Var("id")), { data: Var("data") })
+    )
+)
 ```
- * Create several documents
- * Do the same for "Products" collection (notice that we've also added a reference to "Categories" collection):
+ 9. To quickly create some products, run the following query:
 ```
-{
-    name: "Some product name",
-    price": 152.11,
-    description: "Some description",
-    category_id: Ref(Collection("Categories"), "287626591762121219"),
-    quantity: 5,
-}
+Map(
+    [
+        ["201", {
+            name: "Catch-22",
+            price: 12.22,
+            description: "lorem ipsum",
+            category_id: Ref(Collection("Categories"), "101"),
+            quantity: 5,
+        }],
+        ["202", {
+            name: "The Little Prince", price: 10.49, description: "lorem ipsum", category_id: Ref(Collection("Categories"), "101"), quantity: 5,
+        }],
+        ["203", {
+            name: "Frozen Pizza", price: 7.99, description: "lorem ipsum", category_id: Ref(Collection("Categories"), "102"), quantity: 5,
+        }],
+        ["204", {
+            name: "Fresh Salad", price: 5.99, description: "lorem ipsum", category_id: Ref(Collection("Categories"), "102"), quantity: 5,
+        }],
+    ],
+    Lambda(
+        ["id", "data"],
+        Create(Ref(Collection("Products"), Var("id")), { data: Var("data") })
+    )
+)
 ```
-Make sure to add your own "category_id" reference, to retrieve it you can click "Collections" in the fauna dashboard, and choose one of the documents in "Categories" collection.
- * You can populate more data for those 2 collections if you want
 
-### Running the application locally
-The application uses fauna managed database service, 
-you'll need to export 2 environment variables to access it (getting a secret key is described in the previous section):
+## Run the app locally
+1. To access your Fauna database, you'll need to export two environment variables. Get `your-secret-key` from the secret you copied in the [Set up your Fauna database](#set-up-your-fauna-database) section, and run the following in your terminal:
 ```
 export FAUNA_DB_HOST=https://db.fauna.com
 export FAUNA_SECRET_KEY=your-secret-key
 ```
-This is a spring boot application, and you can start a server by running:
+2. Start a server by running:
 ```
 ./gradlew bootRun
 ```
-After that server should be available at http://localhost:8080/
-
-### Rest endpoints
-- List of categories: http://localhost:8080/categories/
-- Category names: http://localhost:8080/categories/names/
-- List of products: http://localhost:8080/products/
-
-### Swagger UI
-Swagger UI is automatically started as well, so you can check all
-the available endpoints here:  
-http://localhost:8080/swagger-ui/
+3. When you start your server, a Swagger UI should be available at http://localhost:8080/swagger-ui/ where you can test the following REST endpoints:
+    - List of categories: http://localhost:8080/categories/
+    - Category names: http://localhost:8080/categories/names/
+    - List of products: http://localhost:8080/products/
