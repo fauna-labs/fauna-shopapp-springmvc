@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.net.MalformedURLException;
+import java.util.Map;
 
 @Configuration
 public class FaunaClientConfig {
@@ -21,6 +22,7 @@ public class FaunaClientConfig {
         return FaunaClient.builder()
                 .withEndpoint(url)
                 .withSecret(secret)
+                .withCustomHeaders(Map.of("X-Fauna-Source", "shopapp-springmvc"))
                 .build();
     }
 }
