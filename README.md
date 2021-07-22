@@ -6,6 +6,9 @@ by using a Fauna client for Java
 The only prerequisite you need to run this application is JDK:  
 https://openjdk.java.net/install/index.html
 
+Supported Java versions:
+- 11 and higher
+
 You can do all operations on the database from the fauna dashboard:  
 https://dashboard.fauna.com/  
 Alternatively, you can use a fauna-shell app:  
