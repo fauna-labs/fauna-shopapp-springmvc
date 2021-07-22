@@ -6,7 +6,7 @@ by using a Fauna client for Java
 The only prerequisite you need to run this application is JDK:  
 https://openjdk.java.net/install/index.html
 
-All the operations on the database you can do from the dashboard:  
+You can do all operations on the database from the fauna dashboard:  
 https://dashboard.fauna.com/  
 Alternatively, you can use a fauna-shell app:  
 https://github.com/fauna/fauna-shell
@@ -16,8 +16,8 @@ You'll need to create 2 collections:
 - Categories (name: string)
 - Products (name: string, price: float, description: string, category_id: ref_Categories, quantity: int)
 
-The steps of how you can do that:
-[Sign up for free](https://dashboard.fauna.com/accounts/register) or [log in](https://dashboard.fauna.com/accounts/login) at [dashboard.fauna.com](https://dashboard.fauna.com/accounts/register).
+Follow the next steps to create collections and documents:  
+ * [Sign up for free](https://dashboard.fauna.com/accounts/register) or [log in](https://dashboard.fauna.com/accounts/login) at [dashboard.fauna.com](https://dashboard.fauna.com/accounts/register).
  * Click [CREATE DATABASE], name it "shopapp", select a region group (e.g., "Classic"), and click [CREATE]
  * Click the [SECURITY] tab at the bottom of the left sidebar, and [NEW KEY].
  * Create a Key with the default Role of "Admin" selected, you'll need to add this key to one of the environment variable to start the app, you'll see the name of that variable in the following section
